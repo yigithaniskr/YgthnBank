@@ -4,10 +4,16 @@ import com.ygthnbank.model.*;
 import com.ygthnbank.repository.AccountRepository;
 import com.ygthnbank.repository.AddressRepository;
 import com.ygthnbank.repository.CustomerRepository;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -28,6 +34,16 @@ public class YgthnbankApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(YgthnbankApplication.class, args);
+	}
+	@Bean
+	public OpenAPI customOpenAPI(@Value("${application-description}")String description,
+								 @Value("${application-version}")String version){
+		return new OpenAPI()
+				.info(new Info()
+				.title("YgthnBank API")
+				.version(version)
+				.description(description)
+				.license(new License().name("YgthnBank API License")));
 	}
 
 	@Override
