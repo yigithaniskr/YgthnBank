@@ -3,7 +3,10 @@ package com.ygthnbank.model;
 import lombok.*;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
@@ -11,7 +14,7 @@ import javax.persistence.Id;
 @Builder
 @EqualsAndHashCode
 @Entity
-public class Account {
+public class Account implements Serializable {
 
     @Id
     private String id;

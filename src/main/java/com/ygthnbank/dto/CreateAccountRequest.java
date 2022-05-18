@@ -13,6 +13,8 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @Builder
 public class CreateAccountRequest extends BaseAccountRequest{
-    @NotBlank(message = "Account id must not be empty" )
+
+    @NotBlank(message = "Account id must not be empty")
     private String id;
+
 }

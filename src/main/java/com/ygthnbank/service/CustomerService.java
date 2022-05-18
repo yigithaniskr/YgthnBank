@@ -9,12 +9,14 @@ import com.ygthnbank.model.Customer;
 import com.ygthnbank.repository.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CustomerService {
+
     private final CustomerRepository customerRepository;
     private final CustomerDtoConverter customerDtoConverter;
 
@@ -23,32 +25,35 @@ public class CustomerService {
         this.customerDtoConverter = customerDtoConverter;
     }
 
-    public CustomerDto createCustomer(CreateCustomerRequest createCustomerRequest){
+    public CustomerDto createCustomer(CreateCustomerRequest customerRequest){
         Customer customer = new Customer();
-        customer.setId(createCustomerRequest.getId());
-        customer.setName(createCustomerRequest.getName());
-        customer.setAddress(createCustomerRequest.getAddress());
-        customer.setDateOfBirth(createCustomerRequest.getDateOfBirt());
-        customer.setCity(City.valueOf(createCustomerRequest.getCity().name()));
+        customer.setId(customerRequest.getId());
+        //customer.setAddress(customerRequest.getAddress());
+        customer.setName(customerRequest.getName());
+        customer.setDateOfBirth(customerRequest.getDateOfBirth());
+        customer.setCity(City.valueOf(customerRequest.getCity().name()));
 
         customerRepository.save(customer);
 
         return customerDtoConverter.convert(customer);
-
     }
 
     public List<CustomerDto> getAllCustomers() {
         List<Customer> customerList = customerRepository.findAll();
+
         List<CustomerDto> customerDtoList = new ArrayList<>();
-        for(Customer customer:customerList){
-            customerDtoList.add(customerDtoConverter.convert(customer)) ;
+
+        for (Customer customer: customerList) {
+            customerDtoList.add(customerDtoConverter.convert(customer));
         }
 
         return customerDtoList;
     }
 
+    @Transactional
     public CustomerDto getCustomerDtoById(String id) {
         Optional<Customer> customerOptional = customerRepository.findById(id);
+
         return customerOptional.map(customerDtoConverter::convert).orElse(new CustomerDto());
     }
 
@@ -56,13 +61,14 @@ public class CustomerService {
         customerRepository.deleteById(id);
     }
 
-    public CustomerDto updateCustomer(String id, UpdateCustomerRequest updateCustomerRequest) {
+    public CustomerDto updateCustomer(String id, UpdateCustomerRequest customerRequest) {
         Optional<Customer> customerOptional = customerRepository.findById(id);
+
         customerOptional.ifPresent(customer -> {
-            customer.setName(updateCustomerRequest.getName());
-            customer.setCity(City.valueOf(updateCustomerRequest.getCity().name()));
-            customer.setDateOfBirth(updateCustomerRequest.getDateOfBirt());
-            customer.setAddress(updateCustomerRequest.getAddress());
+            customer.setName(customerRequest.getName());
+            customer.setCity(City.valueOf(customerRequest.getCity().name()));
+            customer.setDateOfBirth(customerRequest.getDateOfBirth());
+            //customer.setAddress(customerRequest.getAddress());
             customerRepository.save(customer);
         });
 

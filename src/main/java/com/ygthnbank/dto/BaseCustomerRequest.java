@@ -1,5 +1,6 @@
 package com.ygthnbank.dto;
 
+import com.ygthnbank.model.Address;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,9 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BaseCustomerRequest {
-
     private String name;
-    private Integer dateOfBirt;
+    private Integer dateOfBirth;
     private CityDto city;
     private String address;
 }

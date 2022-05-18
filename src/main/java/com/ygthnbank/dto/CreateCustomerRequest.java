@@ -12,5 +12,4 @@ import lombok.NoArgsConstructor;
 public class CreateCustomerRequest extends BaseCustomerRequest{
 
     private String id;
-
 }

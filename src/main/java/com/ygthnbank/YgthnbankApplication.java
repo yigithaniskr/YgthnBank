@@ -1,16 +1,13 @@
 package com.ygthnbank;
 
-import com.ygthnbank.model.Account;
-import com.ygthnbank.model.City;
-import com.ygthnbank.model.Currency;
-import com.ygthnbank.model.Customer;
+import com.ygthnbank.model.*;
 import com.ygthnbank.repository.AccountRepository;
+import com.ygthnbank.repository.AddressRepository;
 import com.ygthnbank.repository.CustomerRepository;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -19,10 +16,14 @@ public class YgthnbankApplication implements CommandLineRunner {
 
 	private final AccountRepository accountRepository;
 	private final CustomerRepository customerRepository;
+	private final AddressRepository addressRepository;
 
-	public YgthnbankApplication(AccountRepository accountRepository, CustomerRepository customerRepository) {
+	public YgthnbankApplication(AccountRepository accountRepository,
+								   CustomerRepository customerRepository,
+								   AddressRepository addressRepository) {
 		this.accountRepository = accountRepository;
 		this.customerRepository = customerRepository;
+		this.addressRepository = addressRepository;
 	}
 
 	public static void main(String[] args) {
@@ -33,23 +34,26 @@ public class YgthnbankApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		Customer c1 = Customer.builder()
 				.id("1234568")
-				.name("Yigit")
+				.name("Cagri")
+				.address(Address.builder().city(City.ISTANBUL).postcode("456312").addressDetails("bu bir adrestir").build())
 				.city(City.ISTANBUL)
-				.address("Ev")
-				.dateOfBirth(1999)
+				.dateOfBirth(1988)
 				.build();
+
+
 		Customer c2 = Customer.builder()
 				.id("789456")
-				.name("Hasan")
+				.name("Semih")
 				.city(City.MANISA)
-				.address("Ev")
+				.address(Address.builder().city(City.MANISA).postcode("456312").addressDetails("bu bir adrestir 2").build())
 				.dateOfBirth(2000)
 				.build();
+
 		Customer c3 = Customer.builder()
 				.id("456238")
-				.name("Mert")
+				.name("untpleax")
 				.city(City.IZMIR)
-				.address("Ev")
+				.address(Address.builder().city(City.IZMIR).postcode("456312").addressDetails("bu bir adrestir 3").build())
 				.dateOfBirth(2005)
 				.build();
 
@@ -67,17 +71,21 @@ public class YgthnbankApplication implements CommandLineRunner {
 				.customerId("789456")
 				.city(City.ISTANBUL)
 				.balance(7898.0)
-				.currency(Currency.EUR)
+				.currency(Currency.TRY)
 				.build();
 		Account a3 = Account.builder()
 				.id("102")
 				.customerId("456238")
 				.city(City.ISTANBUL)
-				.currency(Currency.USD)
 				.balance(120000.0)
+				.currency(Currency.TRY)
 				.build();
 
 		accountRepository.saveAll(Arrays.asList(a1,a2,a3));
-
 	}
+
+
+
+
+
 }
